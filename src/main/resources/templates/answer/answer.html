@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:replace="fragments/header :: header-css" />
+<style>
+table, th, td {
+	border: 1px solid black;
+}
+</style>
+</head>
+<body>
+
+	<div th:replace="fragments/header :: header" ></div>
+	<div class="container">
+
+		<div class="starter-template">
+			<h1>Question of student</h1>
+			<form action="#" th:action="@{/admin/answer}" th:object="${answer}" method="post">
+			
+				<table border="1" align="center">
+				<tr><td> Question Id</td>
+				    <td><input type="text" id="question_id" th:field="*{question_id}" readonly/></td>
+				</tr>
+					<tr>
+						<td>Subject</td>
+						<td><select id="subject" name="subject">
+								<option value="mat">Mathematics</option>
+								<option value="phy">Physics</option>
+								<option value="che">Chemistry</option>
+								<option value="eng">English</option>
+								<option value="sos">Social Science</option>
+								<option value="eco">Economics</option>
+						     </select>
+						  </td>
+					</tr>
+					<tr>
+						<td>Answer</td>
+						<td><textarea rows="14" cols="90" name="answer"
+								id="answer">Enter Answer details here...</textarea>
+						</td>
+					</tr>
+					<tr>
+						<td>Student's Name</td>
+						<td>
+							<input type= "text" th:field="*{studentName}">
+						</td>
+					</tr>
+					<tr>
+						<td>Teacher's Name</td>
+						<td>
+							<input type="text" th:field="*{teacherName}">
+						</td>
+					</tr>
+				</table>
+				<div align="center">
+					<input type="submit" value="Submit" /> <input type="reset" value="Cancel" />
+				</div>
+			</form>
+			
+			<div><!--  Here we need the functionality of image/jpg.pdf upload later this image can 
+			be donwloaded from the answer list	submit and reset option should be after this code -->
+			</div>
+			
+			
+			
+			
+		</div>
+
+	</div>
+	<!-- /.container -->
+
+	<div th:replace="fragments/footer :: footer" ></div>
+
+</body>
+</html>

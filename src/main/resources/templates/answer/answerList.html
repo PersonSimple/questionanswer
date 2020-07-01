@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+
+    <div th:replace="fragments/header :: header"/>
+
+<div class="container" align="center">
+
+    <div class="starter-template">
+        <h1>Admin page (Spring Security protected)</h1>
+
+        <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+
+
+
+			<table border=1>
+				<tr>
+					<th>ID</th>
+					<th>Answer</th>
+					<th>Student ID</th>
+				</tr>
+				<tr th:each="answer : ${answer}">
+					<td th:text="${answer.id}"      align="center"></td>
+					<td th:text="${answer.answer}"  align="center"></td>
+					<td th:text="${answer.user_id}" align="center"></td>
+				</tr>
+			</table>
+
+
+			<form th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out"/>
+        </form>
+
+    </div>
+
+</div>
+<!-- /.container -->
+
+<div th:replace ="fragments/footer :: footer"></div>
+
+</body>
+</html>

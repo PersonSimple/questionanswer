@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:replace="fragments/header :: header-css" />
+</head>
+<body>
+
+	<div th:replace="fragments/header :: header" /></div>
+
+	<div class="container" align="center">
+
+		<div class="starter-template">
+			<h1>User page (Spring Security protected)</h1>
+
+			<h1 th:inline="text">Hello
+				[[${#httpServletRequest.remoteUser}]]!</h1>
+
+
+			<table>
+				<tr>
+
+					<td>
+						<!--  <form th:action="@{/logout}" method="post"> -->
+                          
+							<table>
+							<form>
+								<thead>
+									<tr>
+										<th>Id</th>
+										<th>Question</th>
+										<th>Sub</th>
+									<!--	<th>Date</th>-->
+										<th>Name</th>
+										<th>Edit</th>
+										<th>Del</th>
+										<th>Ans</th>
+
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:if="${questionList.empty}">
+										<td colspan="2">No Question Available</td>
+									</tr>
+									<tr th:each="questionList : ${questionList}">
+										<td><span th:text="${questionList.Id}"> Id </span></td>
+										<td><span th:text="${questionList.question}">
+												Question </span></td>
+										<td><span th:text="${questionList.subject}">
+												Subject </span></td>
+										<!--  <td><span th:text="${questionList.question_date}">
+												Question Date </span></td> -->
+									  	<td><span th:text="${questionList.userName}"> User
+												Name </span></td> 
+										<td><a th:href="@{/question/edit(id=${questionList.id})}">Edit</a></td>
+										<td><a
+											th:href="@{/admin/question/delete(id=${questionList.id})}">Del</a></td>
+										<td><a th:href="@{/admin/answer(id=${questionList.id},studentName=${questionList.userName})}">Ans</a></td>
+										
+									</tr>
+								</tbody>
+								</form>
+							</table>
+
+						
+					</td>
+					<td>
+						<!-- <form th:action = "@{/uploadFile}" method="post" enctype="multipart/form-data"> -->
+							<table>
+								<thead>
+									<tr>
+										<th>File & upload </th>
+
+									</tr>
+								</thead>
+								<tbody>
+									
+									<tr th:each="questionList : ${questionList}">
+									
+										<td>
+										 <form th:action = "@{/uploadFile}" method="post" enctype="multipart/form-data">
+										 <input  id="singleFileUploadInput" type="file" name="file" />
+										<input type="hidden" name="question_id" th:value="${questionList.id}" />
+										<input type="submit" class="primary submit-btn">
+									    </form>	
+										</td>
+									
+									</tr>
+								</tbody>
+							</table>
+					  <!--  	</form> -->
+
+					</td>
+				</tr>
+
+			</table>
+
+
+
+           <form th:action="@{/logout}" method="post">
+			  <input type="submit" value="Sign Out" />
+		   </form>
+
+		</div>
+
+	</div>
+	<!-- /.container -->
+	<div th:replace="fragments/footer :: footer"></div>
+ <!--  <script src="/js/main.js" ></script> -->
+</body>
+</html>
