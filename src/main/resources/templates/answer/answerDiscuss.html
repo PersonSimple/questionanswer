@@ -2,12 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
  <div th:replace="fragments/header :: header-css" /> 
- <style>
+<!-- <style>
 table, th, td {
-	border: 1px solid blue;
+	border: 1px solid black;
 }
-</style>
- </head>
+</style> -->
+</head>
 <body>
 
 	<div th:replace="fragments/header :: header" ></div>
@@ -15,7 +15,7 @@ table, th, td {
 
 		<div class="starter-template">
 			<h1>Question of student</h1>
-			<form action="#" th:action="@{/admin/answer}" th:object="${answer}" method="post" enctype="multipart/form-data">
+			<form action="#" th:action="@{/user/student/discuss}" th:object="${answer}" method="post" enctype="multipart/form-data">
 			
 				<table border="1" align="center">
 				<tr><td> Question Id</td>
@@ -77,6 +77,10 @@ table, th, td {
 			be donwloaded from the answer list	submit and reset option should be after this code 
 			-->
 			</div>
+			
+			
+			
+			
 		</div>
 
 	</div>

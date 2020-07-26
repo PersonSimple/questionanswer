@@ -12,7 +12,10 @@ import com.school.question.model.Question;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 	
-	@Query("FROM Question WHERE userName = ?1")
+	@Query("FROM Question WHERE studentName = ?1")
 	List<Question> findByUserName(String userName);
 	
+	/*@Query("FROM Question WHERE userName = ?1")
+	List<Question> findByUserAndSubject(String userName,String subject);
+	*/
 }

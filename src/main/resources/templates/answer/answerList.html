@@ -1,38 +1,52 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <div th:replace="fragments/header :: header-css"/>
+    <div th:replace="fragments/header :: header-css"></div>
+    
+    <style>
+table, th, td {
+	border: 1px solid blue;
+}
+</style>
 </head>
 <body>
 
-    <div th:replace="fragments/header :: header"/>
+    <div th:replace="fragments/header :: header"></div>
 
 <div class="container" align="center">
 
     <div class="starter-template">
-        <h1>Admin page (Spring Security protected)</h1>
+         <h1 th:inline="text">Solution provided by : [[${#httpServletRequest.remoteUser}]]!</h1>
 
-        <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
-
-
+ <form th:action = "@{/user/edit}" method="post" >
 
 			<table border=1>
 				<tr>
-					<th>ID</th>
+					<th>Answer Id</th>
+					<th>Question Id</th>
 					<th>Answer</th>
-					<th>Student ID</th>
+					<th>Student Name</th>
+					<th>File Name</th>
 				</tr>
-				<tr th:each="answer : ${answer}">
+				<tr th:if="${answerList.empty}">
+					<td colspan="2">No Answer Available</td>
+				</tr>
+				<tr th:each="answer : ${answerList}">
 					<td th:text="${answer.id}"      align="center"></td>
+					<td th:text="${answer.question_id}"      align="center"></td>
 					<td th:text="${answer.answer}"  align="center"></td>
-					<td th:text="${answer.user_id}" align="center"></td>
+					<td th:text="${answer.studentName}" align="center"></td>
+					<td> <a th:href="${answer.id}" th:text="${answer.fileName}" ></a></td>
+					<td> <a th:href="@{/user/answer/edit(aid=${answer.id},qid=${answer.question_id})}"> edit</a></td>
+					<td> <a th:href="@{/user/answer/discuss(aid=${answer.id},qid=${answer.question_id})}"> discuss</a></td>
+					
 				</tr>
 			</table>
+</form>
 
-
-			<form th:action="@{/logout}" method="post">
-            <input type="submit" value="Sign Out"/>
-        </form>
+			
+          <a th:href="@{/home}">  <input type="submit" value="Cancel"/> </a>
+        
 
     </div>
 

@@ -1,35 +1,27 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<div th:replace="fragments/header :: header-css" />
+ <div th:replace="fragments/header :: header-css" />
 </head>
 <body>
 
 	<div th:replace="fragments/header :: header" /></div>
-
 	<div class="container" align="center">
-
 		<div class="starter-template">
-			<h1>User page (Spring Security protected)</h1>
-
-			<h1 th:inline="text">Hello
+			<h1 th:inline="text">Your question : 
 				[[${#httpServletRequest.remoteUser}]]!</h1>
 
-
-			<table>
+		<!-- 	<table>
 				<tr>
-
-					<td>
-						<!--  <form th:action="@{/logout}" method="post"> -->
-                          
+					<td> -->
+						 <form th:action="@{/logout}" method="post">
 							<table>
-							<form>
 								<thead>
 									<tr>
 										<th>Id</th>
 										<th>Question</th>
 										<th>Sub</th>
-									<!--	<th>Date</th>-->
+										<th>Date</th>
 										<th>Name</th>
 										<th>Edit</th>
 										<th>Del</th>
@@ -47,61 +39,48 @@
 												Question </span></td>
 										<td><span th:text="${questionList.subject}">
 												Subject </span></td>
-										<!--  <td><span th:text="${questionList.question_date}">
-												Question Date </span></td> -->
-									  	<td><span th:text="${questionList.userName}"> User
+										 <td><span th:text="${questionList.question_date}">
+												Question Date </span></td>
+									  	<td><span th:text="${questionList.studentName}"> Student
 												Name </span></td> 
 										<td><a th:href="@{/question/edit(id=${questionList.id})}">Edit</a></td>
 										<td><a
 											th:href="@{/admin/question/delete(id=${questionList.id})}">Del</a></td>
-										<td><a th:href="@{/admin/answer(id=${questionList.id},studentName=${questionList.userName})}">Ans</a></td>
+										<td><a th:href="@{/admin/answer(id=${questionList.id},studentName=${questionList.studentName})}">Ans</a></td>
 										
 									</tr>
 								</tbody>
-								</form>
+								
 							</table>
-
+                         </form>
 						
-					</td>
-					<td>
-						<!-- <form th:action = "@{/uploadFile}" method="post" enctype="multipart/form-data"> -->
+		<!--  	</td>
+					 <td>
 							<table>
 								<thead>
 									<tr>
 										<th>File & upload </th>
-
 									</tr>
 								</thead>
 								<tbody>
-									
 									<tr th:each="questionList : ${questionList}">
-									
 										<td>
 										 <form th:action = "@{/uploadFile}" method="post" enctype="multipart/form-data">
 										 <input  id="singleFileUploadInput" type="file" name="file" />
-										<input type="hidden" name="question_id" th:value="${questionList.id}" />
-										<input type="submit" class="primary submit-btn">
+										 <input type="hidden" name="question_id" th:value="${questionList.id}" />
+										 <input type="submit" class="primary submit-btn">
 									    </form>	
 										</td>
-									
 									</tr>
 								</tbody>
 							</table>
-					  <!--  	</form> -->
-
 					</td>
-				</tr>
-
+ 				</tr>
 			</table>
+-->
 
-
-
-           <form th:action="@{/logout}" method="post">
-			  <input type="submit" value="Sign Out" />
-		   </form>
-
+   	  <a th:href="@{/home}"><input type="submit" value="Cancel" /></a>
 		</div>
-
 	</div>
 	<!-- /.container -->
 	<div th:replace="fragments/footer :: footer"></div>

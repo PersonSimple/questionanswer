@@ -23,19 +23,29 @@ public class User {
   @GeneratedValue (strategy=GenerationType.AUTO)
   private long id;
 
-  @Column(name = "userName")
+  @Column(name = "userName",length=35)
   private String userName;
 
 
-  @Column(name = "password")
+  @Column(name = "password",length=12)
   private String password;
 
-  @Column(name = "roles")
+  @Column(name = "roles",length=10)
   private String roles;
   
   @Column(name = "created_date")
   private Date created_date;
   
+  @Column(name = "subject" ,length=3)
+  private String subject;
+  
+  //this is for class or grade
+  @Column(name = "standard",length=2)
+  private String standard;
+  
+  //status will be active= true,1 of false,0
+  @Column(name = "status",length=1)
+  private String status; 
  
 
 public User() {
@@ -83,52 +93,31 @@ public void setCreated_date(Date created_date) {
 	this.created_date = created_date;
 }
 
-@Override
-public int hashCode() {
-	final int prime = 31;
-	int result = 1;
-	result = prime * result + ((created_date == null) ? 0 : created_date.hashCode());
-	result = prime * result + (int) (id ^ (id >>> 32));
-	result = prime * result + ((password == null) ? 0 : password.hashCode());
-	result = prime * result + ((roles == null) ? 0 : roles.hashCode());
-	result = prime * result + ((userName == null) ? 0 : userName.hashCode());
-	return result;
+
+
+public String getSubject() {
+	return subject;
 }
 
-@Override
-public boolean equals(Object obj) {
-	if (this == obj)
-		return true;
-	if (obj == null)
-		return false;
-	if (getClass() != obj.getClass())
-		return false;
-	User other = (User) obj;
-	if (created_date == null) {
-		if (other.created_date != null)
-			return false;
-	} else if (!created_date.equals(other.created_date))
-		return false;
-	if (id != other.id)
-		return false;
-	if (password == null) {
-		if (other.password != null)
-			return false;
-	} else if (!password.equals(other.password))
-		return false;
-	if (roles == null) {
-		if (other.roles != null)
-			return false;
-	} else if (!roles.equals(other.roles))
-		return false;
-	if (userName == null) {
-		if (other.userName != null)
-			return false;
-	} else if (!userName.equals(other.userName))
-		return false;
-	return true;
+public void setSubject(String subject) {
+	this.subject = subject;
 }
 
+public String getStandard() {
+	return standard;
+}
+
+public void setStandard(String standard) {
+	this.standard = standard;
+}
+
+public String getStatus() {
+	return status;
+}
+
+public void setStatus(String status) {
+	this.status = status;
+}
 
 
 

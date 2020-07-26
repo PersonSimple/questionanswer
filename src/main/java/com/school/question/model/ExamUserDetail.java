@@ -17,6 +17,8 @@ public class ExamUserDetail implements UserDetails {
 	private String password;
 	private List<GrantedAuthority> authorities;;
 	private Date created_date;
+	private String subject;
+	private String standard;
 
 	public ExamUserDetail() {
 		super();
@@ -26,6 +28,8 @@ public class ExamUserDetail implements UserDetails {
 	public ExamUserDetail(User user) {
 		this.userName = user.getUserName();
 		this.password=user.getPassword();
+		this.subject =user.getSubject();
+		this.standard= user.getStandard();
 		this.authorities = Arrays.stream(user.getRoles().split(","))
 				                 .map(SimpleGrantedAuthority::new )
 				                 .collect(Collectors.toList());
@@ -50,6 +54,16 @@ public class ExamUserDetail implements UserDetails {
 	public String getUsername() {
 		// TODO Auto-generated method stub
 		return userName;
+	}
+	
+	
+
+	public String getSubject() {
+		return subject;
+	}
+
+	public String getStandard() {
+		return standard;
 	}
 
 	@Override

@@ -29,6 +29,12 @@ public class Answer {
   private String answer;
 
 
+  @Column(name="fileName")
+  private String fileName;
+
+  @Column(name="fileType")
+  private String fileType;
+  
   @Lob
   private byte[] data;
 
@@ -43,18 +49,27 @@ public class Answer {
   
   @Column(name="question_id")
   private long question_id;
-  
+
+  public String getFileName() {
+	return fileName;
+}
+
+public void setFileName(String fileName) {
+	this.fileName = fileName;
+}
+
+public String getFileType() {
+	return fileType;
+}
+
+public void setFileType(String fileType) {
+	this.fileType = fileType;
+}
 
 public Answer() {
 	super();
 	// TODO Auto-generated constructor stub
 }
-
-
-
-
-
-
 
 public long getId() {
 	return id;

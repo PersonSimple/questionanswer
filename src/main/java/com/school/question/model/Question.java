@@ -31,14 +31,21 @@ public class Question {
   private String subject;
  
   
-  @Basic(optional = false)
-  @Column(name = "question_date",  updatable = false)
+ 
+  @Column(name = "question_date")
   //@Temporal(TemporalType.TIMESTAMP)
   private Date question_date;
   
   
-  @Column(name="userName")
-  private String userName;
+ /* @Column(name="userName")
+  private String userName;*/
+  
+  @Column(name="stduentName")
+  private String studentName;
+  
+  @Column(name="status",length=12)
+  private String status;
+  
 
 public Question() {
 	super();
@@ -79,12 +86,20 @@ public void setSubject(String subject) {
 	this.subject = subject;
 }
 
-public String getUserName() {
-	return userName;
+public String getStudentName() {
+	return studentName;
 }
 
-public void setUserName(String userName) {
-	this.userName = userName;
+public void setStudentName(String studentName) {
+	this.studentName = studentName;
+}
+
+public String getStatus() {
+	return status;
+}
+
+public void setStatus(String status) {
+	this.status = status;
 }
 
 @Override
@@ -93,9 +108,9 @@ public int hashCode() {
 	int result = 1;
 	result = prime * result + (int) (id ^ (id >>> 32));
 	result = prime * result + ((question == null) ? 0 : question.hashCode());
-	result = prime * result + ((question_date == null) ? 0 : question_date.hashCode());
+	result = prime * result + ((status == null) ? 0 : status.hashCode());
+	result = prime * result + ((studentName == null) ? 0 : studentName.hashCode());
 	result = prime * result + ((subject == null) ? 0 : subject.hashCode());
-	result = prime * result + ((userName == null) ? 0 : userName.hashCode());
 	return result;
 }
 
@@ -115,35 +130,24 @@ public boolean equals(Object obj) {
 			return false;
 	} else if (!question.equals(other.question))
 		return false;
-	if (question_date == null) {
-		if (other.question_date != null)
+	if (status == null) {
+		if (other.status != null)
 			return false;
-	} else if (!question_date.equals(other.question_date))
+	} else if (!status.equals(other.status))
+		return false;
+	if (studentName == null) {
+		if (other.studentName != null)
+			return false;
+	} else if (!studentName.equals(other.studentName))
 		return false;
 	if (subject == null) {
 		if (other.subject != null)
 			return false;
 	} else if (!subject.equals(other.subject))
 		return false;
-	if (userName == null) {
-		if (other.userName != null)
-			return false;
-	} else if (!userName.equals(other.userName))
-		return false;
 	return true;
 }
 
-@Override
-public String toString() {
-	return "Question [id=" + id + ", question=" + question + ", subject=" + subject + ", question_date=" + question_date
-			+ ", userName=" + userName + "]";
-}
 
-
-
-  
- 
-
- 
   
 }

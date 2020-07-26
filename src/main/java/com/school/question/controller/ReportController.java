@@ -1,63 +1,71 @@
 package com.school.question.controller;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+//import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.school.question.dto.AnswerDto;
+/*import com.javabycode.model.AjaxResponseBody;
+import com.javabycode.model.LoginForm;*/
 import com.school.question.model.Answer;
-import com.school.question.model.Question;
-import com.school.question.service.AnswerServiceImp;
-import com.school.question.service.QuestionServiceImpl;
+import com.school.question.model.ITeacherReport;
+import com.school.question.model.User;
+import com.school.question.service.ReportServiceImpl;
 
 @Controller
-public class AnswerController {
-	
-	@Autowired
-	private AnswerServiceImp answerService;
-	
-	@Autowired
-	private QuestionServiceImpl  questionService;
-	
-/*
-	   @PostMapping("/uploadFile")
-	    public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
-	      DBFile dbFile = dbFileStorageService.storeFile(file);
+public class ReportController {
 
-	        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-	                .path("/downloadFile/")
-	                .path(dbFile.getId())
-	                .toUriString();
-
-	        return new UploadFileResponse(dbFile.getFileName(), fileDownloadUri,
-	                file.getContentType(), file.getSize());
-	    }
-*/
-	
-	   @RequestMapping("/student/answer")
-	    public String studentQuestion(Model model) {
-		   model.addAttribute("message","Hello Kailash!!");
-		   
-		   return "studentQuestion";
-	    }
+	@Autowired
+	private ReportServiceImpl  reportService;
 	   
-	   /**
+	   @GetMapping("/super/admin/report")
+	    public String getReportHome() {
+		   return "report/reportHome";
+	    }  
+
+	   
+   @GetMapping("/super/admin/teacherList")
+	    public String getTeacherList(@RequestParam long id,Model model) {
+	    List<User>  userList=  reportService.getTeacherList("ROLE_ADMIN");
+	    model.addAttribute("userList", userList);
+	    
+	    //System.out.println(userList.toString());
+		return "report/teacherList";
+	    }  
+   
+   @GetMapping("/super/admin/studentList")
+	    public String getStudentList(Model model) {
+	        List<User>  userList = reportService.getStudentList("ROLE_USER");
+		    model.addAttribute("userList", userList);
+		    return "report/studentList";
+	    }  
+ 
+	@GetMapping("/super/admin/answerList")
+	    public String getAnswerList(Model model) {
+	       List<Answer> ansList = reportService.findAllAnswer();
+	       model.addAttribute("ansList", ansList);
+		   return "report/reportHome";
+	    }  
+
+	
+	
+	@GetMapping("/super/admin/performance")
+    public String getTotalAndMonthCountAjax(@RequestParam String teacherName,Model model) {
+        Optional<User>  teacherInfo = reportService.findByUserName(teacherName);
+        List<ITeacherReport> totalAnser = reportService.getTeacherReport(teacherName);
+        model.addAttribute("totalAnswer",totalAnser);
+        model.addAttribute("teacherInfo",teacherInfo.get());
+        return "report/teacherReport";
+    }
+	
+	
+	/**
 	    * it will save a new record in answer table for same question_id
 	    * @param model
 	    * @param aid
@@ -65,7 +73,8 @@ public class AnswerController {
 	    * @return
 	    */
 	
-	   @GetMapping("/user/answer/discuss")
+	 /*
+	   @GetMapping("/super/answer/discuss")
 	    public String answerDiscuss(Model model,@RequestParam long aid,@RequestParam long qid) {
 		   Optional<Answer> answer =  answerService.findById(aid);
 		   answer.get().setId(0);
@@ -74,14 +83,14 @@ public class AnswerController {
 	    }  
 	
 	   
-/**
+*//**
  * this will save a new record in answer table
  * @param model
  * @param aid
  * @param qid
  * @return
- */
-	   @PostMapping("/user/student/discuss")
+ *//*
+	   @PostMapping("/super/student/discuss")
 	   public String answerUserDiscuss(@ModelAttribute Answer answer,@RequestParam("file") MultipartFile file) {
 		   try {
 			   answer.setFileName(file.getOriginalFilename());
@@ -97,18 +106,13 @@ public class AnswerController {
 	        
 	    }
 
-	   
-	   ///----------------------------------
-	
-	   
-	   
-	   @GetMapping("/user/answer/edit")
+	   @GetMapping("/super/answer/edit")
 	    public String answerEdit(Model model,@RequestParam long aid,@RequestParam long qid) {
 		   Optional<Answer> answer =  answerService.findById(aid);
 		   Optional<Question> question = questionService.findById(qid);
-		   /*AnswerDto dto = new AnswerDto();
+		   AnswerDto dto = new AnswerDto();
 		   dto.setAnswer(answer.get());
-		   dto.setQuestion(question.get());*/
+		   dto.setQuestion(question.get());
 		   
 		   
 		   model.addAttribute("question",question.get());
@@ -118,15 +122,15 @@ public class AnswerController {
 		   return "answer/answer";
 	    }  
 	   
-	   /**
-	    *  answerList get method for current user he may be teacher or student
-	    *  to get list of answer user need to provide the user id . 
+	   *//**
+	    *  answerList method get method for current user he may be teacher or student
+	    *  this list the answer for the user need to provide the user id . 
 	    *  filter record on the basis of user id will list in this view  
 	    * @param model
 	    * @return
-	    */
+	    *//*
 
-	   @GetMapping("/user/answerList")
+	   @GetMapping("/super/answerList")
 	   public String answerList(Model model) {
 		   Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		   List<Answer> answerList= answerService.answerList(authentication.getName(),authentication.getName());
@@ -135,7 +139,7 @@ public class AnswerController {
 	    }
 	   
 	   
-	   /**
+	   *//**
 	    * this method for answer will populate the question_id form question page 
 	    * and userName from current login account
 	    * template is under the answer folder
@@ -143,9 +147,9 @@ public class AnswerController {
 	    * @param id
 	    * @param model
 	    * @return
-	    */
+	    *//*
 	   
-	   @GetMapping("/admin/answer")
+	   @GetMapping("/super/admin/answer")
 	   public String answer(@RequestParam long id, @RequestParam String studentName, Model model) {
 		   
 		    Answer answer = new Answer();
@@ -159,13 +163,14 @@ public class AnswerController {
 	    }
 	   
 
-	   /**
+	   *//**
 	    * collecting information in answer object and passing to service answerSave method
 	    * this method return the view answer of the answer module. only admin will save
 	    * @param answer
 	    * @return
 	    */
-	   @PostMapping("/admin/answer")
+	 /*
+	   @PostMapping("/super/admin/answer")
 	   public String answerSave(@ModelAttribute Answer answer,@RequestParam("file") MultipartFile file) {
 		   try {
 			   answer.setFileName(file.getOriginalFilename());
@@ -175,31 +180,21 @@ public class AnswerController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		   long millis=System.currentTimeMillis();  
-		   answer.setAnswer_date(new java.sql.Date(millis));
+		   
 		   answerService.answerSave(answer);
-	        return "answer/answer";
+	       return "answer/answer";
 	        
 	    }
 	   
 	   
-/*	   @GetMapping(path = { "/user/{id}" })
-	    public Answer getImage(@PathVariable("id") long id) throws IOException {
-	        final Optional<Answer> retrievedImage = service.findById(id);
-	        Answer img = new Answer(retrievedImage.get().getName(), retrievedImage.get().getType(),
-	                decompressBytes(retrievedImage.get().getPicByte()));
-	        return retrievedImage.get();
-	    }
-*/	   
-	   
-	   @GetMapping("/user/{fileName}")
-	   public ResponseEntity getImage(@PathVariable long fileName) {
+	    @GetMapping("/super/{fileName}")
+	    public ResponseEntity getImage(@PathVariable long fileName) {
 	   	Answer document = answerService.findById(fileName).get();
 	   	return ResponseEntity.ok()
 	   			.contentType(MediaType.parseMediaType("application/octet-stream"))
 	   			.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + document.getFileName() + "\"")
 	   			.body(document.getData());
 	   }
-
+*/
 
 }

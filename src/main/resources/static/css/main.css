@@ -1,144 +1,68 @@
-/** {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 500;
+  overflow: hidden;
+  background-color: #333;
 }
 
-body {
-    margin: 0;
-    padding: 0;
-    font-weight: 400;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 1rem;
-    line-height: 1.58;
-    color: #333;
-    background-color: #f4f4f4;
+li {
+  float: left;
 }
 
-body:before {
-    height: 50%;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background: #128ff2;
-    content: "";
-    z-index: 0;
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
 }
 
-.clearfix:after {
-    display: block;
-    content: "";
-    clear: both;
+li a:hover:not(.active) {
+  background-color: #111;
 }
 
-
-h1, h2, h3, h4, h5, h6 {
-    margin-top: 20px;
-    margin-bottom: 20px;
+.active {
+  background-color: #4CAF50;
 }
 
-h1 {
-    font-size: 1.7em;
+/* 
+
+We're working with the body tag, and so with the WHOLE page
+body
+{
+    background-color: #F2F4F4;   #e6f2ff; /* The page background will be black
+   
+    color: black; The page text will be white
+}
+ table {
+	border: 1px solid blue;
+} 
+
+Add a black background color to the top navigation
+.topnav {
+  background-color: #333;
+  overflow: hidden;
 }
 
-a {
-    color: #128ff2;
+Style the links inside the navigation bar
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
 }
 
-button {
-    box-shadow: none;
-    border: 1px solid transparent;
-    font-size: 14px;
-    outline: none;
-    line-height: 100%;
-    white-space: nowrap;
-    vertical-align: middle;
-    padding: 0.6rem 1rem;
-    border-radius: 2px;
-    transition: all 0.2s ease-in-out;
-    cursor: pointer;
-    min-height: 38px;
+Change the color of links on hover
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
 }
 
-button.primary {
-    background-color: #128ff2;
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12);
-    color: #fff;
-}
-
-input {
-    font-size: 1rem;
-}
-
-input[type="file"] {
-    border: 1px solid #128ff2;
-    padding: 6px;
-    max-width: 100%;
-}
-
-.file-input {
-    width: 100%;
-}
-
-.submit-btn {
-    display: block;
-    margin-top: 15px;
-    min-width: 100px;
-}
-
-@media screen and (min-width: 500px) {
-    .file-input {
-        width: calc(100% - 115px);
-    }
-
-    .submit-btn {
-        display: inline-block;
-        margin-top: 0;
-        margin-left: 10px;
-    }
-}
-
-
-.upload-container {
-      max-width: 750px;
-      margin-left: auto;
-      margin-right: auto;
-      background-color: #fff;
-      box-shadow: 0 1px 11px rgba(0, 0, 0, 0.27);
-      margin-top: 60px;
-      min-height: 400px;
-      position: relative;
-      padding: 20px;
-}
-
-.upload-header {
-    border-bottom: 1px solid #ececec;
-}
-
-.upload-header h2 {
-    font-weight: 500;
-}
-
-.single-upload {
-    padding-bottom: 20px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #e8e8e8;
-}
-
-.upload-response {
-    overflow-x: hidden;
-    word-break: break-all;
-}
-*/
-h1{
-	color:#0000FF;
-}
-
-h2{
-	color:#FF0000;
-}
-
-footer{
-    margin-top:60px;
-}
+Add a color to the active/current link
+.topnav a.active {
+  background-color: #4CAF50;
+  color: white;
+} */

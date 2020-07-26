@@ -23,14 +23,18 @@ import com.school.question.model.Tutorial;
 import com.school.question.service.ExcelService;
 
 
-
+/**
+ * this file is not required right now we are not uploading the xls file. 
+ * @author dim.kailash
+ *
+ */
 @CrossOrigin("http://localhost:8080")
 @Controller
 @RequestMapping("/api/excel")
 public class ExcelController {
 
   @Autowired
-  ExcelService fileService;
+  ExcelService excelFileService;
 
   @PostMapping("/upload")
   public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
@@ -38,7 +42,7 @@ public class ExcelController {
 
     if (ExcelHelper.hasExcelFormat(file)) {
       try {
-        fileService.save(file);
+    	  excelFileService.save(file);
 
         message = "Uploaded the file successfully: " + file.getOriginalFilename();
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
@@ -55,7 +59,7 @@ public class ExcelController {
   @GetMapping("/tutorials")
   public ResponseEntity<List<Tutorial>> getAllTutorials() {
     try {
-      List<Tutorial> tutorials = fileService.getAllTutorials();
+      List<Tutorial> tutorials = excelFileService.getAllTutorials();
 
       if (tutorials.isEmpty()) {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -70,7 +74,7 @@ public class ExcelController {
   @GetMapping("/download")
   public ResponseEntity<Resource> getFile() {
     String filename = "tutorials.xlsx";
-    InputStreamResource file = new InputStreamResource(fileService.load());
+    InputStreamResource file = new InputStreamResource(excelFileService.load());
 
     return ResponseEntity.ok()
         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)

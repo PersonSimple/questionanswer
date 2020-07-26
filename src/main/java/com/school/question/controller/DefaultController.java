@@ -9,22 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.beans.factory.annotation.Autowired;
-/*
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-*/
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.school.question.model.LoggedUser;
 import com.school.question.model.User;
-import com.school.question.service.AnswerServiceImp;
 import com.school.question.service.LoginService;
 
 @Controller
@@ -34,7 +26,7 @@ public class DefaultController {
 	LoginService service;
 
     @GetMapping("/")
-    public String home1() {
+    public String login() {
         return "/home";
     }
 
@@ -49,44 +41,37 @@ public class DefaultController {
         return "/admin";
     }
 
-
-
-	/*
-	 * @GetMapping("/questionList") public String questionList() { return
-	 * "/questionList"; }
-	 */
-
-	/*
-	 * @GetMapping("/question") public String questionPage(Model model) {
-	 * 
-	 * LoggedUser loggedUser = new LoggedUser(); Authentication authentication =
-	 * SecurityContextHolder.getContext().getAuthentication();
-	 * 
-	 * loggedUser.setUserName(authentication.getName()); // loggedUser.setRoles(
-	 * authentication.getAuthorities());
-	 * 
-	 * model.addAttribute("loggedUser", loggedUser);
-	 * 
-	 * return "/question"; }
-	 */
-
-	/*
-	 * @GetMapping("/login") public String login() { return "/login"; }
-	 * 
-	 */
+    @GetMapping("/about")
+    public String aboutPage() {
+        return "about";
+    }
     
-	/*
-	 * @PostMapping("/login") public String loginRequest(Model model) {
-	 * 
-	 * System.out.println (model.getAttribute("user").toString());
-	 * 
-	 * 
-	 * 
-	 * 
-	 * return "/login"; }
-	 */
+    @GetMapping("/contact")
+    public String contactPage() {
+        return "contact";
+    }
     
-    @RequestMapping(value="/logout")
+    @GetMapping("/admin/userCreation")
+    public String createUser( Model model) {
+    	model.addAttribute("user", new User());
+        return "loginPage";
+    }
+    
+      
+    /**
+     * this method create user and password. username should be unique
+     * @param user
+     * @return
+     */
+    @PostMapping("/admin/userCreation")
+    public String saveUser(@ModelAttribute User user) {
+    	long millis=System.currentTimeMillis();  
+    	user.setCreated_date(new java.sql.Date(millis));//saving the date form controller
+		service.save(user);
+        return "/home";
+    }
+   
+	 @RequestMapping(value="/logout")
     public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null){    

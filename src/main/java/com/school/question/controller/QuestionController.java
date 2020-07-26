@@ -1,66 +1,44 @@
 package com.school.question.controller;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.school.question.model.DBFile;
 import com.school.question.model.LoggedUser;
 import com.school.question.model.Question;
-import com.school.question.payload.UploadFileResponse;
-import com.school.question.service.QuestionService;
+import com.school.question.service.QuestionServiceImpl;
 
 @Controller
 public class QuestionController {
 	
 	@Autowired
-	QuestionService service;
+	QuestionServiceImpl service;
 
-	
-	
 	   @RequestMapping("/user/question")
 	    public String studentQuestion(Model model) {
 		   LoggedUser loggedUser = new LoggedUser();
 		   Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		   loggedUser.setUserName(authentication.getName());
 		   model.addAttribute("loggedUser",loggedUser);
-		   
 		   return "question";
-	        
-
 	    }
 	   
 	   
 	   @GetMapping("/user/questionList")
 	   public String greetingForm(Model model) {
-			
 		   Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			
-			
 		   List<Question> questionList= service.questionList(authentication.getName());
 		   model.addAttribute("questionList",questionList);
-			
-			
 			return "questionList";
 	   }
 	   
@@ -75,13 +53,10 @@ public class QuestionController {
 		   
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-			question.setUserName(authentication.getName());
+			question.setStudentName(authentication.getName());
 			long millis=System.currentTimeMillis();  
-		   
-			question.setQuestion_date(new java.sql.Date(millis));
-			
+			question.setQuestion_date(new java.sql.Date(millis));//saving the date form controller
 			service.save(question);
-			
 		    return "redirect:/user/questionList/" ;
 		   
 	      }
@@ -99,7 +74,7 @@ public class QuestionController {
 		   loggedUser.setUserName(authentication.getName());
 		   model.addAttribute("loggedUser",loggedUser);
 		   
-		   Optional<Question> question = service.serachQuestion(id);
+		   Optional<Question> question = service.findById(id);
 		   model.addAttribute("question",question.get());
 		   
 		   return "questionEdit";
