@@ -37,8 +37,7 @@ public class Question {
   private Date question_date;
   
   
- /* @Column(name="userName")
-  private String userName;*/
+ 
   
   @Column(name="stduentName")
   private String studentName;
@@ -147,6 +146,7 @@ public boolean equals(Object obj) {
 		return false;
 	return true;
 }
+
 
 
   

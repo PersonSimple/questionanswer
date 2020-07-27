@@ -1,3 +1,8 @@
+table, th, td {
+	border: 1px solid blue;
+	padding: 2px
+}
+
 ul {
   list-style-type: none;
   margin: 0;

@@ -37,7 +37,9 @@ public class QuestionController {
 	   @GetMapping("/user/questionList")
 	   public String greetingForm(Model model) {
 		   Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		   List<Question> questionList= service.questionList(authentication.getName());
+		   String role = authentication.getAuthorities().toArray()[0].toString();
+		  // List<Question> questionList= service.questionList(authentication.getName());
+		   List<Question> questionList= service.questionList(authentication);
 		   model.addAttribute("questionList",questionList);
 			return "questionList";
 	   }
