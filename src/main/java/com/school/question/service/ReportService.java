@@ -23,11 +23,20 @@ public interface ReportService {
 	public Long getTotalAnswer(String userName); //
 	
 	public List<ITeacherReport> getTeacherReport(String userName);
-	//public Optional<User> getTeacherInfo(String teacherName);
+	public Optional<User> getTeacherInfo(String teacherName);
 	public Optional<User> findByUserName(String userName);
+	
+	public Optional<User>getTeacherRecord(String teacherName);
 //
 // public List<Question>  getQuestionList();
 // public List<Answer>  getAnswerList();
 //
+	/**
+	 * this method is use to toggle the user status. it will change the status value 
+	 * form 0 to 1 or from 1 to 0
+	 * @param user
+	 * @return
+	 */
+	public User	toggleUserAccss(User user);
 }
 

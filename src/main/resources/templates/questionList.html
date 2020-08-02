@@ -12,9 +12,6 @@
 			<h1 th:inline="text">Your question : 
 				[[${#httpServletRequest.remoteUser}]]!</h1>
 
-		<!-- 	<table>
-				<tr>
-					<td> -->
 						 <form th:action="@{/logout}" method="post">
 							<table>
 								<thead>
@@ -24,67 +21,46 @@
 										<th>Sub</th>
 										<th>Date</th>
 										<th>Name</th>
+										<th>Status</th>
 										<th>Edit</th>
-										<th>Del</th>
-										<th>Ans</th>
-
+										<th>-Phase-</th>
+										<th>Response</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr th:if="${questionList.empty}">
 										<td colspan="2">No Question Available</td>
 									</tr>
-									<tr th:each="questionList : ${questionList}">
-										<td><span th:text="${questionList.Id}"> Id </span></td>
-										<td><span th:text="${questionList.question}">
+									<tr th:each="quest : ${questionList}">
+										<td><span th:text="${quest.Id}"> Id </span></td>
+										<td><span th:text="${quest.question}">
 												Question </span></td>
-										<td><span th:text="${questionList.subject}">
+										<td><span th:text="${quest.subject}">
 												Subject </span></td>
-										 <td><span th:text="${questionList.question_date}">
+										 <td><span th:text="${quest.question_date}">
 												Question Date </span></td>
-									  	<td><span th:text="${questionList.studentName}"> Student
+									  	<td><span th:text="${quest.studentName}"> Student
 												Name </span></td> 
-										<td><a th:href="@{/question/edit(id=${questionList.id})}">Edit</a></td>
-										<td><a
-											th:href="@{/admin/question/delete(id=${questionList.id})}">Del</a></td>
-										<td><a th:href="@{/admin/answer(id=${questionList.id},studentName=${questionList.studentName})}">Ans</a></td>
-										
+										<td><span th:text="${quest.status}"> Student
+												Name </span></td> 
+										<td><a th:href="@{/question/edit(id=${quest.id})}">Edit</a></td>
+										<td><a th:href="@{/admin/question/closeIt(id=${quest.id})}">Close it</a></td>
+										<td><a th:href="@{/admin/answer(id=${quest.id},
+										                                studentName=${quest.studentName},
+										                                question=${quest.question},
+										                                status=${quest.status},
+										                                subject=${quest.subject}
+										                                )
+										                  }">Answer</a></td>
 									</tr>
 								</tbody>
-								
 							</table>
                          </form>
-						
-		<!--  	</td>
-					 <td>
-							<table>
-								<thead>
-									<tr>
-										<th>File & upload </th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr th:each="questionList : ${questionList}">
-										<td>
-										 <form th:action = "@{/uploadFile}" method="post" enctype="multipart/form-data">
-										 <input  id="singleFileUploadInput" type="file" name="file" />
-										 <input type="hidden" name="question_id" th:value="${questionList.id}" />
-										 <input type="submit" class="primary submit-btn">
-									    </form>	
-										</td>
-									</tr>
-								</tbody>
-							</table>
-					</td>
- 				</tr>
-			</table>
--->
 
    	  <a th:href="@{/home}"><input type="submit" value="Cancel" /></a>
 		</div>
 	</div>
 	<!-- /.container -->
 	<div th:replace="fragments/footer :: footer"></div>
- <!--  <script src="/js/main.js" ></script> -->
-</body>
+ </body>
 </html>

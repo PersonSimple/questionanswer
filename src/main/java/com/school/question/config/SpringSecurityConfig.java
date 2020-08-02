@@ -42,7 +42,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     
 	/**
-	 *  you have to implement this callback method loadUserByUsername().  userDetailsService will call this 
+	 *  you have to implement this callback method loadUserByUsername().  
+	 *  userDetailsService will call this 
 	 *  method and populate the user information 
 	 */
     @Autowired

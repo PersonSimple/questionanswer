@@ -36,13 +36,10 @@ public class Question {
   //@Temporal(TemporalType.TIMESTAMP)
   private Date question_date;
   
-  
- 
-  
   @Column(name="stduentName")
   private String studentName;
   
-  @Column(name="status",length=12)
+  @Column(name="status",length=10)
   private String status;
   
 

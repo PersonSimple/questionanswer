@@ -1,32 +1,28 @@
 $(document).ready(function () {
 
 $("#teacher-form").submit(function (event) {
-         
+         alert (" Hello !!");
         //stop submit the form event. Do this manually using ajax post function
         event.preventDefault();
 
         var teacherForm = {}
-//        teacherForm["username"] = $("#username").val();
-//        teacherForm["password"] = $("#password").val();
+        $("#btn-login").prop("disabled", true);
 
-//       $("#btn-login").prop("disabled", true);
-        
         $.ajax({
             type: "POST",
             contentType: "application/json",
-            url: "/super/admin/performance",
+            url: "/super/admin/disbaleTeacher",
             data: JSON.stringify(teacherForm),
             dataType: 'json',
             cache: false,
             timeout: 600000,
             success: function (data) {
-
+            	alert (" Hello !!");
                 var json = "<h4>Ajax Response</h4><pre>"
                     + JSON.stringify(data, null, 4) + "</pre>";
                 $('#feedback').html(json);
 
                 console.log("SUCCESS : ", data);
-                //$("#btn-login").prop("disabled", false);
 
             },
             error: function (e) {
@@ -36,8 +32,7 @@ $("#teacher-form").submit(function (event) {
                 $('#feedback').html(json);
 
                 console.log("ERROR : ", e);
-                $("#btn-login").prop("disabled", false);
-
+               
             }
         });
         

@@ -43,14 +43,10 @@ public class UserController {
 	                file.getContentType(), file.getSize());
 	    }
 	   */
-	   @RequestMapping("/userlogin")
+	   @RequestMapping("/user/userInformation")
 	    public String studentQuestion(Model model) {
-		   
 		   model.addAttribute("message","Hello Kailash!!");
-		   
 		   return "studentQuestion";
-	        
-
 	    }
 
 }

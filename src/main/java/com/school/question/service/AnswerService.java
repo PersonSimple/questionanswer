@@ -19,6 +19,7 @@ public interface AnswerService {
 	
 	public Optional<Answer> findById(long id);
 	public Answer answerSave(Answer answer);
+	public List<Answer> findByQuestion_id(long qid);
 
 }
 

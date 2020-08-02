@@ -14,56 +14,40 @@ table, th, td {
 	<div class="container">
 
 		<div class="starter-template">
-			<h1>Question of student</h1>
-			<form action="#" th:action="@{/admin/answer}" th:object="${answer}" method="post" enctype="multipart/form-data">
 			
+			<form action="#" th:action="@{/admin/answer}" th:object="${answer}" method="post" enctype="multipart/form-data">
+			<div align="center"> 
+			<h3>Question:[<span th:color:red th:text="${question}"></span>]
+			Status:[<span th:text="${status}"/></span>]
+			subject:[<span th:text="${subject}"/></span>]</h3>
+			</div>
+				
 				<table border="1" align="center">
 				<tr><td> Question Id</td>
 				    <td><input type="text" id="question_id" th:field="${answer.question_id}" readonly/></td>
-				</tr>
-				<tr><td> Answer Id</td>
+				    <td> Answer Id</td>
 				    <td><input type="text" id="id" th:field="${answer.id}" readonly/></td>
+				    
 				</tr>
-					<tr>
-						<td>Subject</td>
-						<td>
-						
-						    <select id="subject" name="${subject}"> 
-						        <option th:value="mat">Mathematics</option>
-								<option th:value="phy">Physics</option>
-								<option th:value="che">Chemistry</option>
-								<option th:value="eng">English</option>
-								<option th:value="sos">Social Science</option>
-								<option th:value="eco">Economics</option>
-						    </select> 
-						      
-						     <!-- <span th:text="${question.subject}"></span> -->
-						  </td>
-					</tr>
 					<tr>
 						<td>Answer</td>
-						<td><textarea rows="14" cols="90" name="answer" th:field="${answer.answer}"
+						<td colspan="3"><textarea rows="9" cols="83" name="answer" th:field="${answer.answer}"
 								id="answer">Enter Answer details here...</textarea>
 						</td>
 					</tr>
 					<tr>
 						<td>Student's Name</td>
 						<td>
-							<input type= "text" id="studentName" th:field="${answer.studentName}">
+							<input type= "text" id="studentName" th:field="${answer.studentName}" size="31">
 						</td>
-					</tr>
-					<tr>
 						<td>Teacher's Name</td>
 						<td>
-							<input type="text" th:field="${answer.teacherName}">
+							<input type="text" th:field="${answer.teacherName}" size="31">
 						</td>
 					</tr>
-					
 					    <tr>
-						<td colspan="2">File Upload : <input  id="singleFileUploadInput" type="file" name="file" />
-						</td>
-						
-					</tr>
+						  <td colspan="4">File Upload : <input  id="singleFileUploadInput" type="file" name="file"/></td>
+						</tr>
 				</table>
 				<div align="center">
 					<input type="submit" value="Submit" />

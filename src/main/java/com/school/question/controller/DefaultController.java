@@ -64,11 +64,13 @@ public class DefaultController {
      * @return
      */
     @PostMapping("/admin/userCreation")
-    public String saveUser(@ModelAttribute User user) {
+    public String saveUser(@ModelAttribute User user,Model model) {
     	long millis=System.currentTimeMillis();  
     	user.setCreated_date(new java.sql.Date(millis));//saving the date form controller
+    	user.setStatus("1"); // 1 : active 0: inactive
 		service.save(user);
-        return "/home";
+		model.addAttribute(user);
+        return "userInformation";
     }
    
 	 @RequestMapping(value="/logout")

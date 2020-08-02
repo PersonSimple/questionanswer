@@ -2,32 +2,37 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
  <div th:replace="fragments/header :: header-css" /> 
-<!-- <style>
-table, th, td {
-	border: 1px solid black;
-}
-</style> -->
 </head>
 <body>
-
 	<div th:replace="fragments/header :: header" ></div>
 	<div class="container">
-
 		<div class="starter-template">
-			<h1>Question of student</h1>
-			<form action="#" th:action="@{/user/student/discuss}" th:object="${answer}" method="post" enctype="multipart/form-data">
+			<h4>Question of student</h4>
+			<div align="center">
+			<form th:action = "@{/user/edit}" method="post" >
+			<table>
+			<tr>
+					<th>Answer Id</th>
+					<th>Answer</th>
+					<th>File Name</th>
+			</tr>
+			<tr th:each="oldAns : ${answerList}">
+					<td th:text="${oldAns.id}"      align="center"></td>
+					<td th:text="${oldAns.answer}"  align="center"></td>
+					<td> <a th:href="@{/user/{fileName} (fileName=${oldAns.id})}" th:text="${oldAns.fileName}" ></a></td>
+			</tr>
+			</table>
+			</form>
+			</div>
 			
+			<form action="#" th:action="@{/user/student/discuss}" th:object="${answer}" method="post" enctype="multipart/form-data">
 				<table border="1" align="center">
 				<tr><td> Question Id</td>
-				    <td><input type="text" id="question_id" th:field="${answer.question_id}" readonly/></td>
-				</tr>
-				<tr><td> Answer Id</td>
-				    <td><input type="text" id="id" th:field="${answer.id}" readonly/></td>
-				</tr>
-					<tr>
-						<td>Subject</td>
+				    <td><input type="text" id="question_id" th:field="${answer.question_id}" readonly size="12"/></td>
+				    <td> Answer Id</td>
+				    <td><input type="text" id="id" th:field="${answer.id}" readonly size="12"/></td>
+				    <td>Subject</td>
 						<td>
-						
 						    <select id="subject" name="${subject}"> 
 						        <option th:value="mat">Mathematics</option>
 								<option th:value="phy">Physics</option>
@@ -36,57 +41,39 @@ table, th, td {
 								<option th:value="sos">Social Science</option>
 								<option th:value="eco">Economics</option>
 						    </select> 
-						      
-						     <!-- <span th:text="${question.subject}"></span> -->
 						  </td>
-					</tr>
+				</tr>
+				
+					
 					<tr>
 						<td>Answer</td>
-						<td><textarea rows="14" cols="90" name="answer" th:field="${answer.answer}"
+						<td colspan="5"><textarea rows="8" cols="83" name="answer" th:field="${answer.answer}"
 								id="answer">Enter Answer details here...</textarea>
 						</td>
 					</tr>
 					<tr>
 						<td>Student's Name</td>
-						<td>
-							<input type= "text" id="studentName" th:field="${answer.studentName}">
+						<td colspan="2">
+							<input type= "text" id="studentName" th:field="${answer.studentName}" size="30">
 						</td>
-					</tr>
-					<tr>
 						<td>Teacher's Name</td>
-						<td>
-							<input type="text" th:field="${answer.teacherName}">
+						<td colspan="2">
+							<input type="text" th:field="${answer.teacherName}" size="30">
 						</td>
 					</tr>
-					
 					    <tr>
 						<td colspan="2">File Upload : <input  id="singleFileUploadInput" type="file" name="file" />
 						</td>
-						
 					</tr>
 				</table>
 				<div align="center">
 					<input type="submit" value="Submit" />
-					<a th:href="@{/home}"> <input type="button" value="Cancel" /> </a>
+					<a th:href="@{/user/answerList}"> <input type="button" value="Cancel" /> </a>
 				</div>
 			</form>
-			
-			<div>
-			<!--  
-			Here we need the functionality of image/jpg.pdf upload later this image can 
-			be donwloaded from the answer list	submit and reset option should be after this code 
-			-->
-			</div>
-			
-			
-			
-			
 		</div>
-
 	</div>
 	<!-- /.container -->
-
 	<div th:replace="fragments/footer :: footer" ></div>
-
 </body>
 </html>

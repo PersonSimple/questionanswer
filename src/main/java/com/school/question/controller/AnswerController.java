@@ -35,25 +35,10 @@ public class AnswerController {
 	@Autowired
 	private QuestionServiceImpl  questionService;
 	
-/*
-	   @PostMapping("/uploadFile")
-	    public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
-	      DBFile dbFile = dbFileStorageService.storeFile(file);
-
-	        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-	                .path("/downloadFile/")
-	                .path(dbFile.getId())
-	                .toUriString();
-
-	        return new UploadFileResponse(dbFile.getFileName(), fileDownloadUri,
-	                file.getContentType(), file.getSize());
-	    }
-*/
 	
 	   @RequestMapping("/student/answer")
 	    public String studentQuestion(Model model) {
 		   model.addAttribute("message","Hello Kailash!!");
-		   
 		   return "studentQuestion";
 	    }
 	   
@@ -67,12 +52,12 @@ public class AnswerController {
 	
 	   @GetMapping("/user/answer/discuss")
 	    public String answerDiscuss(Model model,@RequestParam long aid,@RequestParam long qid) {
+		   List<Answer> answerList= answerService.findByQuestion_id(qid);
 		   Optional<Answer> answer =  answerService.findById(aid);
-		   answer.get().setId(0);
+		   model.addAttribute("answerList", answerList);
 		   model.addAttribute("answer",answer.get());
 		   return "answer/answerDiscuss";
 	    }  
-	
 	   
 /**
  * this will save a new record in answer table
@@ -86,35 +71,31 @@ public class AnswerController {
 		   try {
 			   answer.setFileName(file.getOriginalFilename());
 			   answer.setFileType(file.getContentType());
-			answer.setData(file.getBytes());
+			   answer.setData(file.getBytes());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		   
+		   // to save the new record into answer table
+		   answer.setId(0);
 		   answerService.answerSave(answer);
-	       return "answer/answerDiscuss";
-	        
+		   return "redirect:/user/answerList";
 	    }
+	   
+	   /**
+	    * This is extra method i feel . we should remove this method edit functionality
+	    * must be in control of teacher only
+	    * @param model
+	    * @param aid
+	    * @param qid
+	    * @return
+	    */
 
-	   
-	   ///----------------------------------
-	
-	   
-	   
-	   @GetMapping("/user/answer/edit")
+	   @GetMapping("/admin/answer/edit")
 	    public String answerEdit(Model model,@RequestParam long aid,@RequestParam long qid) {
 		   Optional<Answer> answer =  answerService.findById(aid);
 		   Optional<Question> question = questionService.findById(qid);
-		   /*AnswerDto dto = new AnswerDto();
-		   dto.setAnswer(answer.get());
-		   dto.setQuestion(question.get());*/
-		   
-		   
 		   model.addAttribute("question",question.get());
 		   model.addAttribute("answer",answer.get());
-		  
-		   
 		   return "answer/answer";
 	    }  
 	   
@@ -133,29 +114,39 @@ public class AnswerController {
 		   model.addAttribute("answerList",answerList);
 	       return "answer/answerList";
 	    }
-	   
-	   
+	 
 	   /**
-	    * this method for answer will populate the question_id form question page 
-	    * and userName from current login account
-	    * template is under the answer folder
 	    * 
+		* this method for answer screen. teacher will  populate the and submit 
+	    * and userName from current login account template is under the answer folder
 	    * @param id
-	    * @param model
+	    * @param studentName  ( student identification)
+	    * @param question ( question string)
+	    * @param status (current status of question )
+	    * @param subject (subject stream of question)
+	    * @param model  ( form values )
 	    * @return
+	    * 
 	    */
 	   
 	   @GetMapping("/admin/answer")
-	   public String answer(@RequestParam long id, @RequestParam String studentName, Model model) {
-		   
+	   public String answer(@RequestParam long id, 
+			   				@RequestParam String studentName,
+			   				@RequestParam String question,
+			   				@RequestParam String status,
+			   				@RequestParam String subject,
+			   				Model model) 
+	   {
 		    Answer answer = new Answer();
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			answer.setTeacherName(authentication.getName());
 			answer.setQuestion_id(id);
-			answer.setStudentName(studentName); // this value can be fetched from database using the question id
+			answer.setStudentName(studentName); 
 	    	model.addAttribute("answer",answer);
+	    	model.addAttribute("question",question);
+	    	model.addAttribute("status",status);
+	    	model.addAttribute("subject",subject);
 	        return "answer/answer";
-	        
 	    }
 	   
 
@@ -177,21 +168,18 @@ public class AnswerController {
 		}
 		   long millis=System.currentTimeMillis();  
 		   answer.setAnswer_date(new java.sql.Date(millis));
-		   answerService.answerSave(answer);
-	        return "answer/answer";
-	        
+		   Answer ans=  answerService.answerSave(answer);
+		   questionService.modifyStatus(ans.getQuestion_id(),"Answered"); // First time answered:status save 
+		   return "redirect:/user/answerList";
+		      
 	    }
-	   
-	   
-/*	   @GetMapping(path = { "/user/{id}" })
-	    public Answer getImage(@PathVariable("id") long id) throws IOException {
-	        final Optional<Answer> retrievedImage = service.findById(id);
-	        Answer img = new Answer(retrievedImage.get().getName(), retrievedImage.get().getType(),
-	                decompressBytes(retrievedImage.get().getPicByte()));
-	        return retrievedImage.get();
-	    }
-*/	   
-	   
+
+	   /**
+	    * this code download the image on the client machine. 
+        * fileName is a numeric id of answer which is linked with image	 
+	    * @param fileName
+	    * @return
+	    */
 	   @GetMapping("/user/{fileName}")
 	   public ResponseEntity getImage(@PathVariable long fileName) {
 	   	Answer document = answerService.findById(fileName).get();
@@ -200,6 +188,4 @@ public class AnswerController {
 	   			.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + document.getFileName() + "\"")
 	   			.body(document.getData());
 	   }
-
-
 }

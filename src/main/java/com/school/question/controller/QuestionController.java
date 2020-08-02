@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.school.question.model.ExamUserDetail;
 import com.school.question.model.LoggedUser;
 import com.school.question.model.Question;
 import com.school.question.service.QuestionServiceImpl;
@@ -58,6 +59,7 @@ public class QuestionController {
 			question.setStudentName(authentication.getName());
 			long millis=System.currentTimeMillis();  
 			question.setQuestion_date(new java.sql.Date(millis));//saving the date form controller
+			question.setStatus("Active"); // first time asked
 			service.save(question);
 		    return "redirect:/user/questionList/" ;
 		   
@@ -69,6 +71,7 @@ public class QuestionController {
 	    * @param model
 	    * @return
 	    */
+	   
 	   @GetMapping("/question/edit")
 	   public String editQuestion(@RequestParam long id, Model model) {
 		   LoggedUser loggedUser = new LoggedUser();
@@ -76,23 +79,29 @@ public class QuestionController {
 		   loggedUser.setUserName(authentication.getName());
 		   model.addAttribute("loggedUser",loggedUser);
 		   
-		   Optional<Question> question = service.findById(id);
-		   model.addAttribute("question",question.get());
-		   
+		   Question question = service.findById(id).get();
+		   String loginRole =  ((ExamUserDetail)authentication.getPrincipal()).getAuthorities().toString();
+		
+		   model.addAttribute("question",question);
+		   model.addAttribute("flag",Boolean.TRUE);
+			if (("C").equals(question.getStatus()) && "[ROLE_USER]".equals(loginRole)){
+				model.addAttribute("msg","Student can't edit closed question");
+				model.addAttribute("flag",Boolean.FALSE);
+			}
 		   return "questionEdit";
-		   
 	   }
 	   
 	   /**
-	    * delete the record . right now i am not disabling it.
+	    * delete the record. It means we need to close the record for further discussion 
+	    * but teacher can update this question to enhance the answer for all.
 	    * @param id
 	    * @return
 	    */
 	   
-	   @GetMapping("/admin/question/delete")
-	   public String deleteQuestion(@RequestParam long id) {
+	   @GetMapping("/admin/question/closeIt")
+	   public String closeIt(@RequestParam long id) {
 		   
-		   service.deleteQuestion(id);
+		   service.closeIt(id);
 		   
 		   return "redirect:/user/questionList/" ;
 		   

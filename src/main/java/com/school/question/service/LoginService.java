@@ -1,5 +1,8 @@
 package com.school.question.service;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
@@ -16,20 +19,28 @@ public class LoginService {
 	  @Autowired
 	  private LoginRepository repository;
 	  
-	  
-	/*
-	 * @Query( value = "SELECT * FROM User ORDER BY id", countQuery =
-	 * "SELECT count(*) FROM User", nativeQuery = true)
-	 */
 	  public boolean validateUser(){
 		  return true;
 	  }
 	  
 	  public User save(User user){
-		  return repository.save(user);
+		user =   repository.save(user);
+		user = setUserLogin(user);
+		user = repository.save(user);  // Hoping this it will update the record.
+		return user;
 		  
 	  }
 
 	
+	  public User setUserLogin(User user) {
+	  	StringBuffer str= new StringBuffer();
+	  	user.setUserName( str.append(user.getFirstName())
+	  		.append("_")
+	  		.append(user.getLastName())
+	  		.append("_")
+	  		.append(user.getId())
+	  		.append("@gmail.com").toString());
+	     return user;
+	  }
 
 }

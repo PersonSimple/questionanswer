@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.util.Arrays;
 import java.util.UUID;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,10 +14,13 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.stereotype.Component;
 
+@Component
 @Entity
-@Table(name = "user")
+@Table(name = "user_profile")
 public class User {
 
   @Id
@@ -23,7 +28,15 @@ public class User {
   @GeneratedValue (strategy=GenerationType.AUTO)
   private long id;
 
-  @Column(name = "userName",length=35)
+  @Column(name = "firstName",length=20)
+  private String firstName;
+
+
+  @Column(name = "lastName",length=20)
+  private String lastName;
+  
+//This id must be generated with the combination of firstname_lastname@generatedId.com
+  @Column(name = "userName",length=40)
   private String userName;
 
 
@@ -44,7 +57,8 @@ public class User {
   private String standard;
   
   //status will be active= true,1 of false,0
-  @Column(name = "status",length=1)
+  //@Column(name = "status",length=1, default "1")
+  @Column(columnDefinition = "varchar(1) default '1'")
   private String status; 
  
 
@@ -93,8 +107,6 @@ public void setCreated_date(Date created_date) {
 	this.created_date = created_date;
 }
 
-
-
 public String getSubject() {
 	return subject;
 }
@@ -120,11 +132,20 @@ public void setStatus(String status) {
 }
 
 
+public String getFirstName() {
+	return firstName;
+}
 
+public void setFirstName(String firstName) {
+	this.firstName = firstName;
+}
 
+public String getLastName() {
+	return lastName;
+}
 
- 
+public void setLastName(String lastName) {
+	this.lastName = lastName;
+}
 
- 
-  
 }//end of class 

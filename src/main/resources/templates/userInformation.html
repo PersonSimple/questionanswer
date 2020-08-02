@@ -10,20 +10,20 @@
 	<div th:replace="fragments/header :: header"></div>
 	<div class="container">
 		<div class="starter-template" align="center">
-			<h1>New User</h1>
+			<h2>User created successfully  </h2>
 			<form action="#" th:action="@{/admin/userCreation}" th:object="${user}" method="post">
 				<table >
 					<tr>
 						<td >First Name</td>
-						<td ><input id="firstName" th:field="*{firstName}" required/> </td>
+						<td ><input id="firstName" th:field="*{firstName}" /> </td>
                         </tr>
                         <tr>
                         <td>Last Name</td>
-						<td><input id="lastName" th:field="*{lastName}"  required/> </td> 
+						<td><input id="lastName" th:field="*{lastName}" /> </td> 
                         </tr>
                          <tr>
                         <td> Subject</td> 
-                        <td><select id="subject" name="subject" required>
+                        <td><select id="subject" th:field ="*{subject}">
 								<option value="mat">Mathematics</option>
 								<option value="phy">Physics</option>
 								<option value="che">Chemistry</option>
@@ -34,10 +34,15 @@
                              
 					<tr>
 						<td>Password</td>
-						<td><input id="password" name="password" type="password"  th:field="${user.password}" required/></td></tr> <tr>
+						<td><input id="password" name="password" type="password"  th:field="${user.password}"/></td></tr> <tr>
 						<td>Class/Standard</td>
 						<td>
-                        <select id="standard" name="standard" required>
+                        <select id="standard" th:field="*{standard}">
+								<!-- <option value="1">First</option>
+								<option value="2">Second</option>
+								<option value="3">Third</option>
+								<option value="4">Fourth</option>
+								<option value="5">Fifth</option> -->
 								<option value="6">Six</option>
                                 <option value="7">Seven</option>
                                 <option value="8">Eight</option>
@@ -51,22 +56,24 @@
 
 					<tr>
 						<td>Role</td>
-						<td><select id="role" th:field="${user.roles}" required>
+						<td> 
+						<select id="role" th:field="*{roles}">
 								<option th:value="ROLE_ADMIN">Administrator</option>
 								<option th:value="ROLE_USER">User</option>
 								<option th:value="ROLE_SUPER">Super User</option>
 								
 						</select></td></tr>
-                       
+                        <tr>
+                        <td> Login Id</td> 
+                        <td>
+                        <span th:text="*{userName}"></span></td>
+                        </tr>
 					 </table>   
 					<div>
-                    
-						<input type="submit" value="Save" />
-						 <a th:href="@{/home}"><input type="button" value="Cancel" /></a>
-						
+                    	 <a th:href="@{/home}"><input type="button" value="Cancel" /></a>
 					</div>
 			</form>
-          <h3>* Remember password or connect to super user.</h3> 
+         <h3> * remember login id and password for future use.... </h3>
 		</div>
 
 	</div>

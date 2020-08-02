@@ -2,21 +2,32 @@ package com.school.question.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+
 
 //import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+//import com.school.question.model.AjaxResponseBody;
 /*import com.javabycode.model.AjaxResponseBody;
 import com.javabycode.model.LoginForm;*/
 import com.school.question.model.Answer;
 import com.school.question.model.ITeacherReport;
 import com.school.question.model.User;
 import com.school.question.service.ReportServiceImpl;
+//import javax.validation.Valid;
 
 @Controller
 public class ReportController {
@@ -25,13 +36,13 @@ public class ReportController {
 	private ReportServiceImpl  reportService;
 	   
 	   @GetMapping("/super/admin/report")
-	    public String getReportHome() {
+	    public String getReportHome(Model model) {
 		   return "report/reportHome";
 	    }  
 
 	   
    @GetMapping("/super/admin/teacherList")
-	    public String getTeacherList(@RequestParam long id,Model model) {
+	    public String getTeacherList(Model model) {
 	    List<User>  userList=  reportService.getTeacherList("ROLE_ADMIN");
 	    model.addAttribute("userList", userList);
 	    
@@ -52,12 +63,11 @@ public class ReportController {
 	       model.addAttribute("ansList", ansList);
 		   return "report/reportHome";
 	    }  
-
 	
 	
 	@GetMapping("/super/admin/performance")
     public String getTotalAndMonthCountAjax(@RequestParam String teacherName,Model model) {
-        Optional<User>  teacherInfo = reportService.findByUserName(teacherName);
+        Optional<User>  teacherInfo = reportService.getTeacherRecord(teacherName);
         List<ITeacherReport> totalAnser = reportService.getTeacherReport(teacherName);
         model.addAttribute("totalAnswer",totalAnser);
         model.addAttribute("teacherInfo",teacherInfo.get());
@@ -66,24 +76,38 @@ public class ReportController {
 	
 	
 	/**
-	    * it will save a new record in answer table for same question_id
-	    * @param model
-	    * @param aid
-	    * @param qid
+	 * this method will change the status. there should be called an ajax call
+	 * because calling this method to enable/disable one value and fetching all 
+	 * record does not make sense
+	 * @param teacherName
+	 * @param model
+	 * @return
+	 */
+	
+	
+   @GetMapping("/super/admin/getTeacher")
+	    public String getTeacherInfo(@RequestParam String teacherName,Model model) {
+		    Optional<User>  teacherInfo = reportService.getTeacherInfo(teacherName);
+	        model.addAttribute("user",teacherInfo.get());
+	        return "report/getTeacher";
+	    } 
+	   
+	   /**
+	    * here id has no meaning in this return statement. we should remove it and from the 
+	    * action of getTeacherList() method.
+	    * @param user
+	    * @param userName
 	    * @return
 	    */
-	
-	 /*
-	   @GetMapping("/super/answer/discuss")
-	    public String answerDiscuss(Model model,@RequestParam long aid,@RequestParam long qid) {
-		   Optional<Answer> answer =  answerService.findById(aid);
-		   answer.get().setId(0);
-		   model.addAttribute("answer",answer.get());
-		   return "answer/answerDiscuss";
-	    }  
+   @PostMapping("/super/admin/disbaleTeacher")
+	    public String toggleUserAccss(@ModelAttribute User user,@RequestParam String userName) {
+	         user = reportService.toggleUserAccss(user);
+	         return "redirect:/super/admin/teacherList";
+	    }
+
 	
 	   
-*//**
+/**
  * this will save a new record in answer table
  * @param model
  * @param aid

@@ -54,11 +54,6 @@ public class ReportServiceImpl implements  ReportService {
 		 return answerRepository.countByTeacherName(userName);
 	}
 	
-	// remove this method
-	public Long countCurrentMonthAns(String userName) {
-		return answerRepository.countCurrentMonthAns(userName);
-		}
-
 	@Override
 	public List<ITeacherReport> getTeacherReport(String userName) {
 		return answerRepository.getTeacherReport(userName);
@@ -68,5 +63,40 @@ public class ReportServiceImpl implements  ReportService {
 	public Optional<User> findByUserName(String teacherName) {
 		return userRepository.findByUserName(teacherName);
 	}
+	
+	/**
+	 * enable or disable to user access unique userName required to search 
+	 * then disable. It return a string value enable/disable toggle according
+	 * to current value 0 or 1 
+	 */
 
+	@Override
+    public User	toggleUserAccss(User user) {
+    	
+    	if("1".equals(user.getStatus())) {
+    		user.setStatus("0");
+    	}
+    	else {
+    		user.setStatus("1");
+    	}
+    	return userRepository.save(user);
+    }
+
+	/**
+	 * this method get the teacher information. Call the userRepository's toggleUserAccess(teacherName).
+	 * Collect User Object and return to controller
+	 * 
+	 */
+	@Override
+	public Optional<User> getTeacherInfo(String teacherName) {
+		return userRepository.toggleUserAccss(teacherName);
+	}
+
+	/**
+	 * get record for performance active/inactive both
+	 */
+	@Override
+	public Optional<User> getTeacherRecord(String teacherName) {
+		return userRepository.getTeacherRecord(teacherName);
+	}
 }

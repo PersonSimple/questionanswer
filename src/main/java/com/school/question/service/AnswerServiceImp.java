@@ -30,6 +30,8 @@ public class AnswerServiceImp implements  AnswerService {
 		return answerRepository.answerList(studentName,teacherName);
 	}
 
+	
+	
 
 	
 	@Override
@@ -42,6 +44,12 @@ public class AnswerServiceImp implements  AnswerService {
 	public Optional<Answer> findById(long id) {
 		return answerRepository.findById(id);
 	}
-	
 
+	@Override
+	public List<Answer> findByQuestion_id(long qid) {
+		
+		return answerRepository.findByQuestion_id(qid);
+	}
+	
+	
 }

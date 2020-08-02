@@ -90,4 +90,10 @@ public class ExamUserDetail implements UserDetails {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "ExamUserDetail [userName=" + userName + ", password=" + password + ", authorities=" + authorities
+				+ ", created_date=" + created_date + ", subject=" + subject + ", standard=" + standard + "]";
+	}
+
 }

@@ -1,11 +1,8 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Teacher Student Work Module</title>
+  <title>Teacher Student Work Module</title>
   <div th:replace="fragments/header :: header-css" ></div> 
- 
- 	
-
  </head>
 <body>
 
@@ -14,9 +11,9 @@
 <div class="container">
 
     <div  align="center">
-    <table width="13%"> 
-        <tr><td colspan="2" align="center" ><h3> -- Home -- </h3> </td></tr>
-        <tr><td>1.</td><td> <a th:href="@{/super/admin/report}">Report</a></h3></td></tr>
+    <table> 
+        <tr><td colspan="2" align="center" ><h1> -- Home -- </h1> </td></tr>
+        <tr><td>1.</td><td> <a th:href="@{/super/admin/report}">Report</a></td></tr>
         <tr><td>2.</td><td> <a th:href="@{/admin/userCreation}">Create new user</a></td></tr>
         <tr><td>3.</td><td> <a th:href="@{/user/questionList}">My question List</a></td></tr>
         <tr><td>4.</td><td> <a th:href="@{/user/question}">Student's question</a></td></tr>
