@@ -11,14 +11,19 @@ table, th, td {
 </head>
 <body>
 
-    <div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/header :: header"></div>
 
-<div class="container" align="center">
+	<div class="container" align="center">
 
     <div class="starter-template">
          <h1 th:inline="text"> [[${#httpServletRequest.remoteUser}]]!</h1>
 
- <form th:action = "@{/user/edit}" method="post" >
+ 			<form th:action = "@{/user/search/answer}" method="post" >
+ 
+ 						<div>
+						<span th:inline="text"> Type answer text :  </span> <input type="text" name="answer"/> <input type="submit" value="Search"/>
+						 </div> <div>&nbsp;</div>
+ 
 			<table border=1>
 				<tr>
 					<th>Answer Id</th>
@@ -41,6 +46,33 @@ table, th, td {
 					<td> <a th:href="@{/user/answer/discuss(aid=${answer.id},qid=${answer.question_id})}"> discuss</a></td>
 				</tr>
 			</table>
+			
+			<div>&nbsp;</div>
+							<div>
+							Total items: [[${totalItems}]] - current page [[${currentPage}]] of  [[${totalPages}]]
+							 &nbsp; - &nbsp;
+							 
+							  <a th:if="${currentPage > 1}"  th:href ="@{/user/answerList/1}"> First</a>
+									<span th:unless="${currentPage>1}"> First</span>
+							 &nbsp;
+							 <a th:if="${currentPage > 1}"  th:href ="@{'/user/answerList/' + ${currentPage-1}}"> Previous</a>
+									<span th:unless="${currentPage>1}"> Previous</span> 
+							  &nbsp; - &nbsp;
+							<span th:each="i: ${#numbers.sequence(1,totalPages)}">
+									<a th:if="${i != currentPage}"  th:href ="@{'/user/answerList/' +${i}}"> [[${i}]]</a>
+									<span th:unless="${i != currentPage}"> [[${i}]]</span>
+							</span>&nbsp;
+							
+							  <a th:if="${currentPage < totalPages}"  th:href ="@{'/user/answerList/'+${currentPage+1}}"> Next</a>
+									<span th:unless="${currentPage < totalPages}"> Next</span>
+							&nbsp;
+							 <a th:if="${currentPage < totalPages}"  th:href ="@{'/user/answerList/' +${totalPages}}"> Last</a>
+									<span th:unless="${currentPage < totalPages}"> Last</span> 
+							
+							
+							</div>
+			
+			
       </form>
           <a th:href="@{/home}">  <input type="submit" value="Cancel"/> </a>
   </div>

@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.Authentication;
 
@@ -30,25 +33,53 @@ public class QuestionServiceImpl implements QuestionService {
 		questionRepository.save(question);
 		return true;
 	}
-	
+
+
 	@Override
-	public List<Question> questionList(Authentication authentication) {
-		List<Question> questionList;
+	public List<Question> searchQuestion(Authentication authentication,String question) {
+		List<Question> questionList =null;
 		String role = authentication.getAuthorities().toArray()[0].toString();
-		String name = authentication.getName();
-		//String subject =authentication.
+		String studentName = authentication.getName();//logged in user id
 		
-		if(role.equals("ROLE_ADMIN")) {
-			    User user = userRepository.findByUserName(name).get();
-				questionList = questionRepository.findBySubject(user.getSubject());
+		if(("ROLE_ADMIN".equals(role))) {
+			    User user = userRepository.findByUserName(studentName).get();
+			    String subject = user.getSubject();
+				questionList = questionRepository.findBySubject(subject,question);
 			}
 			else {
-				if ( role.equals("ROLE_SUPER"))
-					questionList =	questionRepository.findAll();
+				if (("ROLE_SUPER").equals(role))
+					questionList =	questionRepository.findAll(question);
 				else
-					questionList = questionRepository.findByStudentName(name);
+					questionList = questionRepository.findByStudentName(studentName,question);
 			}
 		return questionList;
+		}
+
+	
+	@Override
+	public Page<Question> questionList(Authentication authentication,int pageNumber) {
+		Page<Question> page =null;
+		String role = authentication.getAuthorities().toArray()[0].toString();
+		String student_Name = authentication.getName();//logged in user id
+		
+		Pageable pageable = PageRequest.of(pageNumber-1, 5);
+		
+		if(("ROLE_ADMIN".equals(role))) {
+			    User user = userRepository.findByUserName(student_Name).get();
+			    String subject = user.getSubject();
+				//questionList = questionRepository.findBySubject(user.getSubject());
+			    page =	questionRepository.findBySubject(subject,pageable);
+			}
+			else {
+				if (("ROLE_SUPER").equals(role))
+					//questionList =	questionRepository.findAll();
+					 page =	questionRepository.findAll(pageable);
+				else
+					//questionList = questionRepository.findByStudentName(name);
+					page = questionRepository.findByStudentName(student_Name,pageable);
+			}
+		//return questionList;
+		return page;
 		}
 
 	@Override
@@ -65,7 +96,7 @@ public class QuestionServiceImpl implements QuestionService {
 	 questionRepository.deleteById(id);  
 }
 /**
- * if question is closed it cannot opened again
+ * if question is closed it is fixed status can't change further
  */
 	@Override
 	public Question closeIt(long id) {

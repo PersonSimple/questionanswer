@@ -7,9 +7,10 @@
 	<div th:replace="fragments/header :: header" ></div>
 	<div class="container">
 		<div class="starter-template">
-			<h4>Question of student</h4>
+			
 			<div align="center">
-			<form th:action = "@{/user/edit}" method="post" >
+			<h3>Answer is :</h3>
+			<form action = "" method="post" >
 			<table>
 			<tr>
 					<th>Answer Id</th>
@@ -34,12 +35,12 @@
 				    <td>Subject</td>
 						<td>
 						    <select id="subject" name="${subject}"> 
-						        <option th:value="mat">Mathematics</option>
-								<option th:value="phy">Physics</option>
-								<option th:value="che">Chemistry</option>
-								<option th:value="eng">English</option>
-								<option th:value="sos">Social Science</option>
-								<option th:value="eco">Economics</option>
+						        <option th:value="mat">Mat</option>
+								<option th:value="phy">Phy</option>
+								<option th:value="che">Che</option>
+								<option th:value="eng">Eng</option>
+								<option th:value="sos">Sos</option>
+								<option th:value="eco">Eco</option>
 						    </select> 
 						  </td>
 				</tr>
@@ -54,11 +55,11 @@
 					<tr>
 						<td>Student's Name</td>
 						<td colspan="2">
-							<input type= "text" id="studentName" th:field="${answer.studentName}" size="30">
+							<input type= "text" id="studentName" th:field="${answer.studentName}" size="25">
 						</td>
 						<td>Teacher's Name</td>
 						<td colspan="2">
-							<input type="text" th:field="${answer.teacherName}" size="30">
+							<input type="text" th:field="${answer.teacherName}" size="25">
 						</td>
 					</tr>
 					    <tr>

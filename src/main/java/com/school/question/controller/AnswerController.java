@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.school.question.dto.AnswerDto;
 import com.school.question.model.Answer;
+import com.school.question.model.LoggedUser;
 import com.school.question.model.Question;
 import com.school.question.service.AnswerServiceImp;
 import com.school.question.service.QuestionServiceImpl;
@@ -34,6 +36,39 @@ public class AnswerController {
 	
 	@Autowired
 	private QuestionServiceImpl  questionService;
+	
+	/**
+	 * Simple search on answer from answerList page
+	 * @param model
+	 * @param answer
+	 * @return
+	 */
+	   @PostMapping("user/search/answer")
+	    public String studentAnswer(Model model,@RequestParam String answer) {
+		   
+		   if(null==answer || "".endsWith(answer.trim()))
+			   return listByPage(model,1);
+		   
+		   LoggedUser loggedUser = new LoggedUser();
+		   model.addAttribute("loggedUser",loggedUser);
+		   Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		   loggedUser.setUserName(authentication.getName());
+		   List <Answer> answerList = answerService.searchAnswer(answer.trim());
+		   
+		   
+		  // long totalItems =(answerList == null) ? 0 : answerList.size();
+		   long totalItems = answerList.size();
+		   long totalPages = 1;
+		   model.addAttribute("answerList",answerList);
+		   model.addAttribute("totalItems",totalItems);
+		   model.addAttribute("totalPages",totalPages);
+		   model.addAttribute("currentPage",1);
+		   
+		   model.addAttribute("answerList",answerList);
+		   return "answer/answerList";
+	    }
+
+	
 	
 	
 	   @RequestMapping("/student/answer")
@@ -106,14 +141,14 @@ public class AnswerController {
 	    * @param model
 	    * @return
 	    */
-
-	   @GetMapping("/user/answerList")
+//comment this code  to implement pagination on this select satatement
+/*	   @GetMapping("/user/answerList")
 	   public String answerList(Model model) {
 		   Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		   List<Answer> answerList= answerService.answerList(authentication.getName(),authentication.getName());
 		   model.addAttribute("answerList",answerList);
 	       return "answer/answerList";
-	    }
+	    }*/
 	 
 	   /**
 	    * 
@@ -188,4 +223,38 @@ public class AnswerController {
 	   			.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + document.getFileName() + "\"")
 	   			.body(document.getData());
 	   }
+	   
+	   
+	   /**
+	    * this is pagination and sorting view call listByPages
+	    * @param model
+	    * @return
+	    */
+	   @GetMapping("/user/answerList")
+	   public String viewAnswerList(Model model) {
+		   return listByPage(model,1);
+	   }
+	   
+	   /**
+	    * 
+	    * @param model
+	    * @param pageNumber
+	    * @return
+	    */
+	   @GetMapping("/user/answerList/{pageNumber}")
+	   public String listByPage(Model model ,@PathVariable int pageNumber) {
+		   
+		  // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		   Page<Answer> page =answerService.answerPageList(pageNumber);
+		   long totalItems = page.getTotalElements();
+		   long totalPages = (page.getTotalPages()==0) ?1 : page.getTotalPages() ;
+		   List<Answer> answerList= page.getContent();
+		   model.addAttribute("answerList",answerList);
+		   model.addAttribute("totalItems",totalItems);
+		   model.addAttribute("totalPages",totalPages);
+		   model.addAttribute("currentPage",pageNumber);
+		   
+			return "answer/answerList";
+	   }
+
 }

@@ -35,11 +35,7 @@ public class DefaultController {
         return "/home";
     }
     
-    
-    @GetMapping("/admin")
-    public String admin() {
-        return "/admin";
-    }
+  
 
     @GetMapping("/about")
     public String aboutPage() {
