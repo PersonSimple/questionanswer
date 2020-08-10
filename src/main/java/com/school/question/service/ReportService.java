@@ -38,5 +38,6 @@ public interface ReportService {
 	 * @return
 	 */
 	public User	toggleUserAccss(User user);
+	
 }
 

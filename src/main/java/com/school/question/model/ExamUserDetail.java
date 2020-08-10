@@ -25,6 +25,11 @@ public class ExamUserDetail implements UserDetails {
 		
 	}
 	
+	/** authorities is populated with the roles from database user_profile 
+	 * table . User class is mapped with user_profile
+	 *  
+	 * @param user
+	 */
 	public ExamUserDetail(User user) {
 		this.userName = user.getUserName();
 		this.password=user.getPassword();

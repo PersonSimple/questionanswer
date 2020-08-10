@@ -40,7 +40,7 @@ table, th, td {
 					<td th:text="${answer.question_id}"      align="center"></td>
 					<td th:text="${answer.answer}"  align="center"></td>
 					<td th:text="${answer.studentName}" align="center"></td>
-					<!-- <a th:href="@{/order/{id}/details(id=3,action='show_all')}"> -->
+				
 					<td> <a th:href="@{/user/{fileName} (fileName=${answer.id})}" th:text="${answer.fileName}" ></a></td>
 					<td> <a th:href="@{/admin/answer/edit(aid=${answer.id},qid=${answer.question_id})}"> edit</a></td>
 					<td> <a th:href="@{/user/answer/discuss(aid=${answer.id},qid=${answer.question_id})}"> discuss</a></td>
@@ -68,10 +68,7 @@ table, th, td {
 							&nbsp;
 							 <a th:if="${currentPage < totalPages}"  th:href ="@{'/user/answerList/' +${totalPages}}"> Last</a>
 									<span th:unless="${currentPage < totalPages}"> Last</span> 
-							
-							
 							</div>
-			
 			
       </form>
           <a th:href="@{/home}">  <input type="submit" value="Cancel"/> </a>

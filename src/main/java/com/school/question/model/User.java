@@ -35,12 +35,14 @@ public class User {
   @Column(name = "lastName",length=20)
   private String lastName;
   
-//This id must be generated with the combination of firstname_lastname@generatedId.com
+/**This id must be generated with the combination of firstname_lastname@generatedId.com
+ *  this is login id for user .
+ */
   @Column(name = "userName",length=40)
   private String userName;
 
 
-  @Column(name = "password",length=12)
+  @Column(name = "password",length=256)
   private String password;
 
   @Column(name = "roles",length=10)

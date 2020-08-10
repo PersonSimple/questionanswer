@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.school.question.model.Answer;
@@ -22,6 +23,9 @@ public class ReportServiceImpl implements  ReportService {
 	
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	BCryptPasswordEncoder encoder;
 	
 
 	@Override
@@ -79,9 +83,19 @@ public class ReportServiceImpl implements  ReportService {
     	else {
     		user.setStatus("1");
     	}
+    	//user.setPassword(encoder.encode(user.getPassword()));
     	return userRepository.save(user);
     }
 
+	
+	
+	/*@Override
+    public User	changePassword(User user) {
+    	user.setPassword(encoder.encode(user.getPassword()));
+    	return userRepository.save(user);
+    }*/
+	
+	
 	/**
 	 * this method get the teacher information. Call the userRepository's toggleUserAccess(teacherName).
 	 * Collect User Object and return to controller

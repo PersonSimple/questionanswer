@@ -17,18 +17,18 @@ public class ExamUserDetailsService implements UserDetailsService {
 
 	@Autowired
 	UserRepository userRepository;
-	
+
 	@Override
 	public ExamUserDetail loadUserByUsername(String userName) throws UsernameNotFoundException {
+
+		Optional<User> user = userRepository.findByUserName(userName.trim());
+		user.orElseThrow(() -> new UsernameNotFoundException(" User Not Found !"));
 		
-		Optional< User> user = userRepository.findByUserName(userName.trim());
-		
-		user.orElseThrow(()-> new UsernameNotFoundException(" User Not Found !"));
-		
-		 
-		 return user.map(ExamUserDetail::new).get();
-		 
-		//return new ExamUserDetail(user.get()); // test this 
+		return user.map(ExamUserDetail::new).get();
+
 	}
+	
+	
+
 
 }

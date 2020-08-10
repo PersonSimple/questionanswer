@@ -18,9 +18,6 @@ public class CustomLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler im
         super();
     }
 
-    // API
-
-    //@Override
     public void onLogoutSuccess(final HttpServletRequest request, 
     		                    final HttpServletResponse response) 
     		                    		throws IOException, ServletException  
@@ -29,7 +26,6 @@ public class CustomLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler im
         final String refererUrl = request.getHeader("Referer");
         System.out.println(refererUrl);
 
-        //super.onLogoutSuccess(request, response, authentication);
     }
 
 }

@@ -10,10 +10,9 @@
 <div class="container">
 
     <div class="starter-template">
-        <h1>403 - Access is denied</h1>
-        <div th:inline="text">Hello '[[${#httpServletRequest.remoteUser}]]',
-                you do not have permission to access this page.</div>
-                <h1><span th:href="@{/home}"> Press here to back</span></h1>
+       <div th:inline="text">  <h2>403 - Access is denied</h2>
+        Hello '[[${#httpServletRequest.remoteUser}]]', you don't have permission to access this page.</div>
+                <h3><a th:href="@{/home}"> --Back---</a></h3>
     </div>
    
 
